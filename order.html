@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+             #sidebar {
+            position: absolute;
+        }
+        .sidebar-transition {
+            transition: all 0.3s ease;
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        .overlay.active {
+            display: block;
+        }
+
+        #menuToggle{
+            position: absolute;
+            opacity: 0.8;
+            background-color: rgb(219, 121, 22);
+            z-index: 9999;
+        }
+        @media only screen and (max-width: 1024px) {
+            #menuToggle {
+                margin-top: 3.2rem;
+                position: absolute;
+             }
+}
+</style>
+
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen flex flex-col">
+      <!-- Mobile Menu Button -->
+      <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button id="menuToggle" class="p-2 rounded-md bg-indigo-600 text-black focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="mobile-menu sidebar-transition fixed lg:static inset-y-0 left-0 z-40 w-64 bg-indigo-800 text-white shadow-lg lg:translate-x-0">
+        <div class="flex items-center justify-center h-16 px-4 border-b border-indigo-700">
+            <div class="flex items-center">
+                <i class="fas fa-store mr-2 text-xl"></i>
+                <span class="text-xl font-bold">Bus Que</span>
+            </div>
+        </div>
+        <nav class="mt-6">
+            <div class="px-4">
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Management</h3>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="./index.html" class="flex items-center px-4 py-2 rounded-lg bg-indigo-700 text-white">
+                                <i class="fas fa-tachometer-alt mr-3"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-box-open mr-3"></i>
+                                Inventory
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-users mr-3"></i>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="/order.html" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-receipt mr-3"></i>
+                                Orders
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Reports</h3>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-chart-line mr-3"></i>
+                                Sales
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-chart-pie mr-3"></i>
+                                Analytics
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Settings</h3>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-cog mr-3"></i>
+                                Store Settings
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-user-shield mr-3"></i>
+                                Account
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="absolute bottom-0 w-full p-4 border-t border-indigo-700">
+            <div class="flex items-center">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-10 h-10 rounded-full">
+                <div class="ml-3">
+                    <p class="text-sm font-medium">Sarah Johnson</p>
+                    <p class="text-xs text-indigo-300">Store Manager</p>
+                </div>
+                <button class="ml-auto text-indigo-300 hover:text-white">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Progress Bar -->
+    <div class="bg-white shadow-sm lg:ml-64">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between max-w-2xl mx-auto">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">1</div>
+            <div class="ml-2 text-blue-600 font-medium">Flight</div>
+          </div>
+          <div class="h-1 w-16 bg-blue-600"></div>
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">2</div>
+            <div class="ml-2 text-blue-600 font-medium">Seat</div>
+          </div>
+          <div class="h-1 w-16 bg-gray-200"></div>
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center">3</div>
+            <div class="ml-2 text-gray-600">Payment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-8 lg:ml-64">
+      <div class="max-w-7xl mx-auto">
+        <!-- Flight Info -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 mb-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-800">Select Your Seat</h1>
+              <p class="text-gray-600 mt-1">BUS BKK123 • BKK → NK • Mersides Bus</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex items-center text-gray-600">
+              <i class="fas fa-clock mr-2"></i>
+              <span>Departure: 10:30 PM EST • Duration: 9h 30m</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Seat Selection Area -->
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+          <!-- Seat Map -->
+          <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 flex-grow">
+            <!-- Legend -->
+            <div class="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div class="flex items-center">
+                <div class="w-6 h-6 bg-gray-100 border-2 border-gray-300 rounded-lg mr-2 shadow-sm"></div>
+                <span class="text-gray-700">Available</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-6 h-6 bg-blue-500 border-2 border-blue-600 rounded-lg mr-2 shadow-sm"></div>
+                <span class="text-gray-700">Selected</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-6 h-6 bg-red-100 border-2 border-red-200 rounded-lg mr-2 shadow-sm"></div>
+                <span class="text-gray-700">Sold Out</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-6 h-6 bg-emerald-100 border-2 border-emerald-200 rounded-lg mr-2 shadow-sm"></div>
+                <span class="text-gray-700">Extra Legroom</span>
+              </div>
+            </div>
+  
+            <!-- Cabin -->
+            <div class="relative w-full overflow-x-auto pb-6">
+              <div class="absolute left-0 right-0 top-0 h-20 bg-gradient-to-b from-gray-200 to-transparent rounded-t-full"></div>
+              <div id="seatMap" class="relative max-w-3xl mx-auto">
+                <!-- Rows will be generated by JavaScript -->
+              </div>
+            </div>
+          </div>
+  
+          <!-- Selection Summary - Desktop -->
+          <div class="hidden lg:block bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 w-96">
+            <div id="selectionSummaryDesktop"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  
+    <!-- Selection Summary - Mobile -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t transform transition-transform" id="mobileSummary">
+      <div class="p-4" id="selectionSummaryMobile"></div>
+    </div>
+  
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 mt-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">About Bus Que</h3>
+            <ul class="space-y-2">
+              <li><a href="./index.html" class="hover:text-white">About Us</a></li>
+              <li><a href="#" class="hover:text-white">Careers</a></li>
+              <li><a href="#" class="hover:text-white">Press</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Help</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="hover:text-white">Contact Us</a></li>
+              <li><a href="#" class="hover:text-white">FAQs</a></li>
+              <li><a href="#" class="hover:text-white">Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Legal</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+              <li><a href="#" class="hover:text-white">Cookie Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Connect</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
+              <a href="#" class="hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="hover:text-white text-xl"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
+          © 2024 Bus Management System. All rights reserved.
+        </div>
+      </div>
+    </footer>
+    <script>
+        const seatConfig = {
+  rows: 30,
+  seatsPerRow: 6,
+  exitRows: [10, 11,29,30],
+  soldOutSeats: ["3A", "5F", "12C", "15D", "20B"],
+  prices: {
+    standard: 49.99,
+    exitRow: 69.99,
+    frontCabin: 59.99
+  }
+};
+
+const selectedSeats = new Set();
+
+function generateSeatLabel(row, seatIndex) {
+  return `${row}${String.fromCharCode(65 + seatIndex)}`;
+}
+
+function getSeatPrice(row) {
+  if (seatConfig.exitRows.includes(row)) return seatConfig.prices.exitRow;
+  if (row <= 5) return seatConfig.prices.frontCabin;
+  return seatConfig.prices.standard;
+}
+
+function createSeatButton(row, seatIndex) {
+  const seatLabel = generateSeatLabel(row, seatIndex);
+  const isExitRow = seatConfig.exitRows.includes(row);
+  const isSoldOut = seatConfig.soldOutSeats.includes(seatLabel);
+  const price = getSeatPrice(row);
+
+  const seat = document.createElement("button");
+  seat.className = `
+                w-12 h-12 rounded-lg transform transition-all duration-200 
+                flex flex-col items-center justify-center
+                border-2 shadow-sm hover:shadow-md
+                ${
+                  isSoldOut
+                    ? "bg-red-100 border-red-200 cursor-not-allowed"
+                    : isExitRow
+                    ? "bg-emerald-100 border-emerald-200 hover:bg-emerald-200"
+                    : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                } relative group
+            `;
+  seat.disabled = isSoldOut;
+  seat.dataset.seat = seatLabel;
+  seat.dataset.price = price;
+
+  // Seat number
+  const seatNumber = document.createElement("div");
+  seatNumber.className = "text-xs font-semibold text-gray-700";
+  seatNumber.textContent = seatLabel;
+  seat.appendChild(seatNumber);
+
+  // Price
+  const seatPrice = document.createElement("div");
+  seatPrice.className = "text-[10px] text-gray-600";
+  seatPrice.textContent = `$${price}`;
+  seat.appendChild(seatPrice);
+
+  seat.addEventListener("click", () => toggleSeatSelection(seat));
+  return seat;
+}
+
+function createSeatRow(rowNum) {
+  const row = document.createElement("div");
+  const maxWidth = 90;
+  const minWidth = 70;
+  const progress = rowNum / seatConfig.rows;
+  const currentWidth = maxWidth - (maxWidth - minWidth) * progress;
+
+  row.className = "flex gap-2 justify-center mb-2";
+  row.style.width = `${currentWidth}%`;
+  row.style.margin = "0 auto";
+
+  // Row number
+  const rowLabel = document.createElement("div");
+  rowLabel.className =
+    "w-6 flex items-center justify-center text-xs font-medium text-gray-500";
+  rowLabel.textContent = rowNum;
+  row.appendChild(rowLabel);
+
+  // Left side (ABC)
+  const leftSide = document.createElement("div");
+  leftSide.className = "flex gap-1";
+  for (let i = 0; i < 3; i++) {
+    leftSide.appendChild(createSeatButton(rowNum, i));
+  }
+  row.appendChild(leftSide);
+
+  // Aisle
+  const aisle = document.createElement("div");
+  aisle.className = "w-6";
+  row.appendChild(aisle);
+
+  // Right side (DEF)
+  const rightSide = document.createElement("div");
+  rightSide.className = "flex gap-1";
+  for (let i = 3; i < 6; i++) {
+    rightSide.appendChild(createSeatButton(rowNum, i));
+  }
+  row.appendChild(rightSide);
+
+  return row;
+}
+
+function toggleSeatSelection(seatButton) {
+  const seatLabel = seatButton.dataset.seat;
+
+  if (selectedSeats.has(seatLabel)) {
+    selectedSeats.delete(seatLabel);
+    seatButton.classList.remove("bg-blue-500", "border-blue-600");
+    seatButton.classList.add("bg-gray-100", "border-gray-300");
+  } else {
+    selectedSeats.add(seatLabel);
+    seatButton.classList.remove("bg-gray-100", "border-gray-300");
+    seatButton.classList.add("bg-blue-500", "border-blue-600");
+  }
+
+  updateSelectionSummary();
+}
+
+function createSelectionSummary() {
+  if (selectedSeats.size === 0) {
+    return `
+                    <div class="flex flex-col">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2">Your Selection</h2>
+                        <p class="text-gray-500">No seats selected</p>
+                        <button class="w-full mt-4 bg-gray-400 text-white py-2 px-4 rounded-xl text-sm font-semibold cursor-not-allowed" disabled>
+                            Continue to Payment
+                        </button>
+                    </div>
+                `;
+  }
+
+  let total = 0;
+  let seatsHtml = '<div class="space-y-2">';
+
+  selectedSeats.forEach((seat) => {
+    const seatButton = document.querySelector(`button[data-seat="${seat}"]`);
+    const price = parseFloat(seatButton.dataset.price);
+    total += price;
+
+    seatsHtml += `
+                    <div class="flex justify-between items-center bg-gray-50 rounded-lg p-2">
+                        <span class="text-sm font-medium text-gray-700">Seat ${seat}</span>
+                        <span class="text-sm text-gray-600">$${price.toFixed(
+                          2
+                        )}</span>
+                    </div>
+                `;
+  });
+
+  seatsHtml += "</div>";
+
+  return `
+                <div class="flex flex-col">
+                    <div class="lg:block">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2">Your Selection</h2>
+                        ${seatsHtml}
+                    </div>
+                    <div class="border-t border-gray-200 mt-3 pt-3">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-semibold text-gray-800">Total</span>
+                            <span class="font-bold text-gray-800">$${total.toFixed(
+                              2
+                            )}</span>
+                        </div>
+                        <button onclick="confirmSelection()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl text-sm font-semibold transition-colors">
+                            Continue to Payment
+                        </button>
+                    </div>
+                </div>
+            `;
+}
+
+function updateSelectionSummary() {
+  const desktopSummary = document.getElementById("selectionSummaryDesktop");
+  desktopSummary.innerHTML = createSelectionSummary();
+
+  const mobileSummary = document.getElementById("selectionSummaryMobile");
+  mobileSummary.innerHTML = createSelectionSummary();
+
+  const mobileSummaryContainer = document.getElementById("mobileSummary");
+  mobileSummaryContainer.classList.toggle(
+    "translate-y-full",
+    selectedSeats.size === 0
+  );
+}
+
+  function confirmSelection() {
+  const seats = Array.from(selectedSeats).join(", ");
+  Swal.fire({
+    title: 'Confirm Payment',
+    text: `Proceeding to payment for seats: ${seats}`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Proceed to Payment',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Proceed with payment logic here
+    }
+  });
+}
+
+
+const seatMap = document.getElementById("seatMap");
+for (let row = 1; row <= seatConfig.rows; row++) {
+  seatMap.appendChild(createSeatRow(row));
+}
+
+updateSelectionSummary();
+
+window.addEventListener("resize", () => {
+  const isMobile = window.innerWidth < 1024;
+  const mainContent = document.querySelector("main");
+  mainContent.style.paddingBottom = isMobile ? "180px" : "0";
+});
+
+window.dispatchEvent(new Event("resize"));
+
+    // Toggle mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Initialize Chart.js
+        const salesChartCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [6500, 5900, 8000, 8100, 5600, 5500, 4000],
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Close menu when clicking outside on desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        });
+
+    </script>
+  </body>

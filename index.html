@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        #sidebar {
+            position: absolute;
+        }
         .sidebar-transition {
             transition: all 0.3s ease;
         }
@@ -30,17 +33,28 @@
             display: block;
         }
 
-        #menuToggle{
-            position: absolute;
-            opacity: 0.8;
-            background-color: rgb(219, 121, 22);
-            z-index: 9999;
-        }
-        @media only screen and (max-width: 1024px) {
-            #menuToggle {
-                margin-top: 3.2rem;
-                position: absolute;
-             }
+
+/* Replace or update the existing CSS for #menuToggle */
+#menuToggle {
+    position: fixed; /* Changed from absolute to fixed */
+    opacity: 0.8;
+    background-color: rgb(219, 121, 22);
+    z-index: 9999;
+    top: 1rem; /* Added explicit top positioning */
+    left: 1rem; /* Added explicit left positioning */
+}
+
+@media only screen and (max-width: 1024px) {
+    #menuToggle {
+        margin-top: 0; /* Removed margin-top that was causing positioning issues */
+        /* position is already fixed from above, no need to repeat */
+    }
+}
+
+/* You may also want to ensure the sidebar appears properly when toggled */
+.mobile-menu.active {
+    transform: translateX(0);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
    
@@ -89,7 +103,7 @@
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="/order.html" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                            <a href="./order.html" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
                                 <i class="fas fa-receipt mr-3"></i>
                                 Orders
                             </a>
