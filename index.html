@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Management System</title>
+    <title>Bus Booking System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Added SweetAlert CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <style>
         #sidebar {
             position: absolute;
@@ -18,6 +20,7 @@
         }
         .mobile-menu.active {
             transform: translateX(0);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
         .overlay {
             display: none;
@@ -33,31 +36,19 @@
             display: block;
         }
 
-
-/* Replace or update the existing CSS for #menuToggle */
-#menuToggle {
-    position: fixed; /* Changed from absolute to fixed */
-    opacity: 0.8;
-    background-color: rgb(219, 121, 22);
-    z-index: 9999;
-    top: 1rem; /* Added explicit top positioning */
-    left: 1rem; /* Added explicit left positioning */
-}
-
-@media only screen and (max-width: 1024px) {
-    #menuToggle {
-        margin-top: 0; /* Removed margin-top that was causing positioning issues */
-        /* position is already fixed from above, no need to repeat */
-    }
-}
-
-/* You may also want to ensure the sidebar appears properly when toggled */
-.mobile-menu.active {
-    transform: translateX(0);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-   
+        #menuToggle {
+            position: fixed;
+            opacity: 0.8;
+            background-color: rgb(219, 121, 22);
+            z-index: 9999;
+            top: 1rem;
+            left: 1rem;
+        }
+        @media only screen and (max-width: 1024px) {
+            #menuToggle {
+                margin-top: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -75,14 +66,14 @@
     <div id="sidebar" class="mobile-menu sidebar-transition fixed lg:static inset-y-0 left-0 z-40 w-64 bg-indigo-800 text-white shadow-lg lg:translate-x-0">
         <div class="flex items-center justify-center h-16 px-4 border-b border-indigo-700">
             <div class="flex items-center">
-                <i class="fas fa-store mr-2 text-xl"></i>
-                <span class="text-xl font-bold">Bus Que</span>
+                <i class="fas fa-bus mr-2 text-xl"></i>
+                <span class="text-xl font-bold">Bus Booking</span>
             </div>
         </div>
         <nav class="mt-6">
             <div class="px-4">
                 <div class="mb-8">
-                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Management</h3>
+                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Booking</h3>
                     <ul>
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg bg-indigo-700 text-white">
@@ -92,37 +83,37 @@
                         </li>
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
-                                <i class="fas fa-box-open mr-3"></i>
-                                Inventory
+                                <i class="fas fa-ticket-alt mr-3"></i>
+                                Book Tickets
                             </a>
                         </li>
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
                                 <i class="fas fa-users mr-3"></i>
-                                Customers
+                                Passengers
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="./order.html" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
                                 <i class="fas fa-receipt mr-3"></i>
-                                Orders
+                                My Bookings
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div class="mb-8">
-                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Reports</h3>
+                    <h3 class="text-xs uppercase font-semibold text-indigo-400 tracking-wider mb-4">Services</h3>
                     <ul>
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
-                                <i class="fas fa-chart-line mr-3"></i>
-                                Sales
+                                <i class="fas fa-route mr-3"></i>
+                                Routes
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
-                                <i class="fas fa-chart-pie mr-3"></i>
-                                Analytics
+                            <a href="./order.html" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
+                                <i class="fas fa-bus mr-3"></i>
+                                Buses
                             </a>
                         </li>
                     </ul>
@@ -133,13 +124,13 @@
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
                                 <i class="fas fa-cog mr-3"></i>
-                                Store Settings
+                                Account Settings
                             </a>
                         </li>
                         <li class="mb-2">
                             <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-indigo-700 text-indigo-100 hover:text-white">
                                 <i class="fas fa-user-shield mr-3"></i>
-                                Account
+                                Profile
                             </a>
                         </li>
                     </ul>
@@ -151,9 +142,9 @@
                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-10 h-10 rounded-full">
                 <div class="ml-3">
                     <p class="text-sm font-medium">Sarah Johnson</p>
-                    <p class="text-xs text-indigo-300">Store Manager</p>
+                    <p class="text-xs text-indigo-300">User</p>
                 </div>
-                <button class="ml-auto text-indigo-300 hover:text-white">
+                <button class="ml-auto text-indigo-300 hover:text-white" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -165,16 +156,16 @@
         <!-- Top Navigation -->
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 class="text-lg font-semibold text-gray-900">Dashboard</h1>
+                <h1 class="text-lg font-semibold text-gray-900">Bus Booking Dashboard</h1>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
-                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none" id="notificationBtn">
                             <i class="fas fa-bell"></i>
                             <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
                         </button>
                     </div>
                     <div class="relative">
-                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none" id="messageBtn">
                             <i class="fas fa-envelope"></i>
                             <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-500"></span>
                         </button>
@@ -197,15 +188,15 @@
                         <div class="px-4 py-5 sm:p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
-                                    <i class="fas fa-shopping-cart text-white"></i>
+                                    <i class="fas fa-ticket-alt text-white"></i>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dt class="text-sm font-medium text-gray-500 truncate">
-                                        Today's Sales
+                                        Today's Bookings
                                     </dt>
                                     <dd class="flex items-baseline">
                                         <div class="text-2xl font-semibold text-gray-900">
-                                            $12,345
+                                            45
                                         </div>
                                         <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
                                             <i class="fas fa-arrow-up text-xs"></i>
@@ -225,7 +216,7 @@
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dt class="text-sm font-medium text-gray-500 truncate">
-                                        New Customers
+                                        New Passengers
                                     </dt>
                                     <dd class="flex items-baseline">
                                         <div class="text-2xl font-semibold text-gray-900">
@@ -245,15 +236,15 @@
                         <div class="px-4 py-5 sm:p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
-                                    <i class="fas fa-box-open text-white"></i>
+                                    <i class="fas fa-bus text-white"></i>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dt class="text-sm font-medium text-gray-500 truncate">
-                                        Low Stock Items
+                                        Available Buses
                                     </dt>
                                     <dd class="flex items-baseline">
                                         <div class="text-2xl font-semibold text-gray-900">
-                                            7
+                                            12
                                         </div>
                                         <div class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
                                             <i class="fas fa-arrow-down text-xs"></i>
@@ -269,15 +260,15 @@
                         <div class="px-4 py-5 sm:p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
-                                    <i class="fas fa-truck text-white"></i>
+                                    <i class="fas fa-route text-white"></i>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dt class="text-sm font-medium text-gray-500 truncate">
-                                        Pending Orders
+                                        Active Routes
                                     </dt>
                                     <dd class="flex items-baseline">
                                         <div class="text-2xl font-semibold text-gray-900">
-                                            5
+                                            8
                                         </div>
                                         <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
                                             <i class="fas fa-arrow-up text-xs"></i>
@@ -291,74 +282,115 @@
                     </div>
                 </div>
 
+                <!-- Quick Booking Section -->
+                <div class="bg-white shadow rounded-lg p-6 mb-8">
+                    <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Booking</h2>
+                    <form id="quickBookingForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="from" class="block text-sm font-medium text-gray-700">From</label>
+                            <select id="from" name="from" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option value="">Select departure city</option>
+                                <option value="new-york">New York</option>
+                                <option value="boston">Boston</option>
+                                <option value="chicago">Chicago</option>
+                                <option value="los-angeles">Los Angeles</option>
+                                <option value="seattle">Seattle</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="to" class="block text-sm font-medium text-gray-700">To</label>
+                            <select id="to" name="to" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option value="">Select destination city</option>
+                                <option value="new-york">New York</option>
+                                <option value="boston">Boston</option>
+                                <option value="chicago">Chicago</option>
+                                <option value="los-angeles">Los Angeles</option>
+                                <option value="seattle">Seattle</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="date" name="date" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        </div>
+                        <div class="md:col-span-3">
+                            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Search Buses
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Charts Section -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
                     <div class="bg-white shadow rounded-lg p-6 lg:col-span-2">
-                        <h2 class="text-lg font-medium text-gray-900 mb-4">Sales Overview</h2>
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Booking Trends</h2>
                         <div class="h-64">
-                            <canvas id="salesChart"></canvas>
+                            <canvas id="bookingChart"></canvas>
                         </div>
                     </div>
                     <div class="bg-white shadow rounded-lg p-6">
-                        <h2 class="text-lg font-medium text-gray-900 mb-4">Top Selling Products</h2>
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Popular Routes</h2>
                         <div class="space-y-4">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                    <i class="fas fa-tshirt text-indigo-600"></i>
+                                    <i class="fas fa-route text-indigo-600"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Premium T-Shirt</div>
-                                    <div class="text-sm text-gray-500">$29.99 • 142 sold</div>
+                                    <div class="text-sm font-medium text-gray-900">New York - Boston</div>
+                                    <div class="text-sm text-gray-500">$45.99 • 142 bookings</div>
                                 </div>
                                 <div class="ml-auto bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                                    Bestseller
+                                    Popular
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                    <i class="fas fa-mug-hot text-blue-600"></i>
+                                    <i class="fas fa-route text-blue-600"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Ceramic Mug</div>
-                                    <div class="text-sm text-gray-500">$14.99 • 98 sold</div>
+                                    <div class="text-sm font-medium text-gray-900">Chicago - Detroit</div>
+                                    <div class="text-sm text-gray-500">$35.99 • 98 bookings</div>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                    <i class="fas fa-book text-purple-600"></i>
+                                    <i class="fas fa-route text-purple-600"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Notebook Set</div>
-                                    <div class="text-sm text-gray-500">$19.99 • 76 sold</div>
+                                    <div class="text-sm font-medium text-gray-900">Los Angeles - San Francisco</div>
+                                    <div class="text-sm text-gray-500">$55.99 • 76 bookings</div>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                                    <i class="fas fa-puzzle-piece text-yellow-600"></i>
+                                    <i class="fas fa-route text-yellow-600"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Wooden Puzzle</div>
-                                    <div class="text-sm text-gray-500">$24.99 • 65 sold</div>
+                                    <div class="text-sm font-medium text-gray-900">Seattle - Portland</div>
+                                    <div class="text-sm text-gray-500">$29.99 • 65 bookings</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recent Orders Table -->
+                <!-- Recent Bookings Table -->
                 <div class="bg-white shadow rounded-lg overflow-hidden">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg font-medium text-gray-900">Recent Orders</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Recent Bookings</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Order ID
+                                        Booking ID
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Customer
+                                        Passenger
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Route
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Date
@@ -377,82 +409,94 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #ORD-1001
+                                        #BK-1001
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         John Smith
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        May 15, 2023
+                                        New York - Boston
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        $129.99
+                                        Apr 20, 2025
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        $45.99
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Completed
+                                            Confirmed
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 viewDetails">View</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #ORD-1002
+                                        #BK-1002
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         Sarah Johnson
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        May 14, 2023
+                                        Chicago - Detroit
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        $89.50
+                                        Apr 21, 2025
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        $35.99
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            Processing
+                                            Pending
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 viewDetails">View</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #ORD-1003
+                                        #BK-1003
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         Michael Brown
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        May 14, 2023
+                                        Los Angeles - San Francisco
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        $245.75
+                                        Apr 23, 2025
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        $55.99
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            Shipped
+                                            Boarding Pass Issued
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 viewDetails">View</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #ORD-1004
+                                        #BK-1004
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         Emily Davis
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        May 13, 2023
+                                        Seattle - Portland
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        $59.99
+                                        Apr 19, 2025
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        $29.99
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
@@ -460,7 +504,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 viewDetails">View</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -527,14 +571,14 @@
         });
 
         // Initialize Chart.js
-        const salesChartCtx = document.getElementById('salesChart').getContext('2d');
-        const salesChart = new Chart(salesChartCtx, {
+        const bookingChartCtx = document.getElementById('bookingChart').getContext('2d');
+        const bookingChart = new Chart(bookingChartCtx, {
             type: 'line',
             data: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
                 datasets: [{
-                    label: 'Sales',
-                    data: [6500, 5900, 8000, 8100, 5600, 5500, 4000],
+                    label: 'Bookings',
+                    data: [320, 450, 510, 490, 650, 700, 780],
                     backgroundColor: 'rgba(79, 70, 229, 0.1)',
                     borderColor: 'rgba(79, 70, 229, 1)',
                     borderWidth: 2,
@@ -572,6 +616,107 @@
                 sidebar.classList.remove('active');
                 overlay.classList.remove('active');
             }
+        });
+        
+        // SweetAlert Integration
+        document.getElementById('quickBookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            const date = document.getElementById('date').value;
+            
+            if(!from || !to || !date) {
+                swal("Error", "Please fill in all fields", "error");
+                return;
+            }
+            
+            if(from === to) {
+                swal("Error", "Departure and destination cities cannot be the same", "error");
+                return;
+            }
+            
+            swal({
+                title: "Searching Buses",
+                text: "Looking for buses from " + document.getElementById('from').options[document.getElementById('from').selectedIndex].text + 
+                      " to " + document.getElementById('to').options[document.getElementById('to').selectedIndex].text + 
+                      " on " + date,
+                icon: "info",
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            });
+            
+            // Simulate search delay
+            setTimeout(() => {
+                swal({
+                    title: "Success!",
+                    text: "We found 5 buses matching your criteria",
+                    icon: "success",
+                    button: "View Results"
+                });
+            }, 1500);
+        });
+        
+        // Notification alerts
+        document.getElementById('notificationBtn').addEventListener('click', function() {
+            swal({
+                title: "Notifications",
+                text: "You have 3 new notifications",
+                icon: "info"
+            });
+        });
+        
+        document.getElementById('messageBtn').addEventListener('click', function() {
+            swal({
+                title: "Messages",
+                text: "You have 2 unread messages",
+                icon: "info"
+            });
+        });
+        
+        // Logout confirmation
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            swal({
+                title: "Log Out?",
+                text: "Are you sure you want to log out?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willLogout) => {
+                if (willLogout) {
+                    swal("Logged Out!", "You have been successfully logged out.", "success");
+                    // Here you would normally redirect to login page
+                }
+            });
+        });
+        
+        // View booking details
+        const viewButtons = document.querySelectorAll('.viewDetails');
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const bookingId = this.closest('tr').querySelector('td:first-child').textContent.trim();
+                
+                swal({
+                    title: "Booking Details",
+                    text: "Loading details for " + bookingId,
+                    icon: "info",
+                    buttons: false,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                });
+                
+                setTimeout(() => {
+                    swal({
+                        title: bookingId + " Details",
+                        text: "Passenger information and booking details loaded successfully.",
+                        icon: "success",
+                        button: "Close"
+                    });
+                }, 1000);
+            });
         });
     </script>
 </body>
